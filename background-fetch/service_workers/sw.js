@@ -13,8 +13,11 @@ async function getFetchResult(record) {
 }
 
 function handleBackgroundFetchEvent(event) {
+  const matchFunction = event.registration.matchAll;
+  if (event.registration.id === 'matchonerequest')
+    matchFunction = event.registration.match;
   event.waitUntil(
-    event.registration.matchAll()
+    matchFunction()
       .then(records =>
             Promise.all(records.map(record => getFetchResult(record))))
       .then(results => {
